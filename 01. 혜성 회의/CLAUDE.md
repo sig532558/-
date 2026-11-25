@@ -21,6 +21,7 @@
 - 중심은 Claude, 하위 업무(초안 제작·검증)는 Gemini(무료 버전)가 맡는다.
 - Gemini 호출이 실패하면 멈추지 말고 Claude가 직접 처리한다.
 - 자동 작업은 '주간 업무 브리핑'만 켜 둔다. 브리핑은 이 사이트의 회의자료를 기반으로 정리한다.
+- 서브에이전트 정의: `.claude/agents/gemini-helper.md` (이 프로젝트 전용, 저장소 공통 정의는 루트 `.claude/agents/gemini-helper.md`).
 
 ## 메뉴 현황 (2026-11 결정)
 
