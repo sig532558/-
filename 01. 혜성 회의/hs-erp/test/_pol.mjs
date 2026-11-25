@@ -1,0 +1,12 @@
+import { PGlite } from '@electric-sql/pglite'; import fs from 'fs';
+const db = new PGlite();
+await db.exec(`create role authenticated; create role anon; create schema auth; create table auth.users(id uuid primary key, email text, raw_user_meta_data jsonb);
+create function auth.uid() returns uuid language sql stable as $$ select nullif(current_setting('request.jwt.claim.sub', true),'')::uuid $$;
+create function auth.jwt() returns jsonb language sql stable as $$ select '{}'::jsonb $$; create publication supabase_realtime;
+create schema if not exists net; create table if not exists net._http_response(id bigint primary key, status_code int, content text, error_msg text); create sequence if not exists net.s;
+create or replace function net.http_post(url text, body jsonb default '{}', params jsonb default '{}', headers jsonb default '{}', timeout_milliseconds int default 5000) returns bigint language sql as $f$ select nextval('net.s') $f$;`);
+for (const f of ['01_schema','02_security','03_extend','04_views','05_firewall','06_count_season','07_returns','08_meeting','09_anseong','10_storage','11_notice_pl']) await db.exec(fs.readFileSync('sql/'+f+'.sql','utf8'));
+const r = await db.query(`select tablename, policyname, cmd, qual, with_check from pg_policies where schemaname='public' order by 1,2`);
+const pats = {}; r.rows.forEach((x) => [x.qual, x.with_check].forEach((q) => { if (!q) return; (q.match(/[a-z_.]+\([^()]*\)/g) || []).forEach((m) => { const k = m.replace(/'[^']*'::text/g, "'X'"); pats[k] = (pats[k] || 0) + 1; }); }));
+console.log(r.rows.length); console.log(Object.entries(pats).sort((a,b)=>b[1]-a[1]).map(x=>x[1]+'  '+x[0]).join('\n'));
+console.log(r.rows.slice(0,3).map(x=>JSON.stringify(x)).join('\n'));

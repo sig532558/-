@@ -1,0 +1,20 @@
+// 물동량 정산 파일 인식 점검 — '크리스정산(월간)' 시트 값과 대조
+const XLSX = require('xlsx'); const fs = require('fs'); const V = require('../site/js/volume.js');
+const AT = '/mnt/user-data/attachments/7e416561-536b-572f-95a3-857922cfaa8e/';
+const F = AT + fs.readdirSync(AT).find((f) => f.startsWith('031a13f5'));
+const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process.exitCode = 1; };
+const t0 = Date.now(); const wb = XLSX.read(fs.readFileSync(F), { type: 'buffer', cellFormula: false, cellHTML: false, cellText: false });
+const r = V.readBook(wb.SheetNames.map((n) => ({ name: n, ws: wb.Sheets[n] }))); console.log('읽기', Date.now() - t0, 'ms', JSON.stringify(r.found.map((f) => [f.sheet, f.owner, f.from, f.to, f.rows, f.block, f.procs.length])));
+const M = V.byMonth(r.rows); const S = (ym, o, ps) => Math.round(V.sum(M[ym], o, ps));
+ok(r.found.length === 4 && r.found.every((f) => f.block === '정산'), '4개 화주 시트 · 정산 블록');
+ok(S('2026-09', ['크리스'], ['입고', '입고반품']) === 196822 && S('2026-09', ['크리스'], ['출고']) === 611396 && S('2026-09', ['크리스'], ['반품']) === 306844, '크리스 9월 B2B 입고 196,822 · 출고 611,396 · 반품 306,844 (정산 시트와 같음)');
+ok(S('2026-09', ['크리스'], V.B2C) === 71401, '크리스 9월 B2C 71,401');
+ok(S('2026-09', ['LX'], ['입고', '입고반품', '출고', '반품']) === 233487 && S('2026-09', ['LX'], V.B2C) === 20213, 'LX 9월 B2B 233,487 · B2C 20,213');
+ok(S('2026-09', ['로라'], ['입고', '입고반품', '출고', '반품']) === 112303 && S('2026-09', ['로라'], ['쿠팡출고']) === 614, '로라 9월 B2B 112,303 (쿠팡 출고 614 따로)');
+ok(S('2026-09', ['슈퍼웍스'], null) === 1414, '슈퍼웍스 9월 1,414');
+const m25 = ['2025-02', '2025-03', '2025-04', '2025-05', '2025-06', '2025-07', '2025-08', '2025-09'].map((k) => S(k, null, null));
+ok(JSON.stringify(m25) === JSON.stringify([1573546, 2299461, 1723775, 661880, 812476, 1154800, 1393034, 1696833]), '2025년 2~9월 월 합계 정산 시트와 같음 ' + m25.join(','));
+ok(S('2026-09', null, null) === 1557802, '2026년 9월 전체 1,557,802 (LX B2C 포함)');
+ok(!r.rows.some((x) => x.qty > 5e6), '금액 블록은 읽지 않음');
+const up = V.upserts(r, [{ rec_date: '2026-09-30', owner: '크리스', proc: 'RT반입', qty: 5 }, { rec_date: '2027-01-01', owner: '크리스', proc: '입고', qty: 9 }]);
+ok(up.some((x) => x.rec_date === '2026-09-30' && x.proc === 'RT반입' && x.qty === 0) && !up.some((x) => x.rec_date === '2027-01-01'), '다시 올리면 파일 기간 안의 없는 값은 0 · 기간 밖은 그대로');

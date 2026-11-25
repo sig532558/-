@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>출고 일정 표 꾸밈 방안 D·E·F</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:18px 20px 60px;background:#F3F4F6;font:13px/1.45 'Malgun Gothic','맑은 고딕',system-ui,sans-serif;color:#1F2937}
+h1{font-size:18px;margin:0 0 4px}
+h2{font-size:15px;margin:30px 0 2px;display:flex;align-items:center;gap:8px}
+h2 span.no{display:inline-block;background:#0F1E3D;color:#fff;border-radius:5px;padding:2px 9px;font-size:13px}
+p.d{margin:2px 0 10px;color:#6B7280;font-size:12.5px}
+.box{background:#fff;border:1px solid #D7DAE0;border-radius:10px;padding:12px;overflow:auto}
+table.s{border-collapse:separate;border-spacing:0;width:max-content;font-size:11.5px}
+table.s th,table.s td{border-right:1px solid #E5E7EB;border-bottom:1px solid #E5E7EB;padding:3px 6px;white-space:nowrap}
+table.s td.n,table.s th.n{text-align:right}
+table.s td.c,table.s th.c{text-align:center}
+table.s .st{position:sticky;background:#fff;z-index:3}
+table.s thead th{position:sticky;z-index:4;font-weight:700}
+table.s thead th.st{z-index:5}
+table.s .last{border-right:2px solid #9CA3AF}
+table.s td.day{min-width:52px;text-align:right}
+.flt{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:9px}
+.flt b{font-size:11.5px;color:#6B7280;margin-right:2px}
+.chip{border:1px solid #CBD2DC;background:#fff;border-radius:999px;padding:3px 10px;font-size:11.5px;cursor:pointer}
+.chip.on{background:#0F1E3D;color:#fff;border-color:#0F1E3D}
+.flt input,.flt select{border:1px solid #CBD2DC;border-radius:6px;padding:3px 6px;font-size:11.5px;height:26px}
+.dt{border:1px solid #9CA3AF;border-radius:4px;padding:1px 3px;font-size:11px;width:104px;background:#FFFDF0}
+.hint{font-size:11.5px;color:#6B7280;margin-top:8px}
+.bx{display:inline-flex;align-items:center;gap:5px}
+.bx i{font-style:normal;cursor:pointer;opacity:.75;font-size:11px}
+.bx i:hover{opacity:1}
+.tools{font-size:11px;color:#9CA3AF}
+.addrow{display:flex;gap:6px;align-items:center;margin-top:8px;font-size:11.5px;color:#6B7280}
+.addrow input,.addrow select{border:1px solid #CBD2DC;border-radius:6px;padding:3px 6px;font-size:11.5px;height:26px}
+.addrow button{border:1px solid #0F1E3D;background:#0F1E3D;color:#fff;border-radius:6px;padding:3px 12px;font-size:11.5px;height:26px;cursor:pointer}
+.bandcell{text-align:center;font-weight:700;border-radius:999px;padding:2px 8px;font-size:11px}
+
+/* ===== D안 : 띠 간트형 ===== */
+.D table.s thead th{background:#F4F6F9;color:#38414F;border-bottom:2px solid #C9CFD9}
+.D table.s thead th.tod{background:#FFE9A8;color:#6B4E00}
+.D table.s thead th.wk{color:#B9452F}
+.D table.s tbody tr td{height:30px}
+.D table.s tbody tr:nth-child(even) td.day{background:#FAFBFC}
+.D table.s td.wk{background:#F2F3F6}
+.D table.s td.tod{box-shadow:inset 1px 0 0 #C0392B,inset -1px 0 0 #C0392B}
+.D tr.grp td{background:#EEF1F8;font-weight:700;border-top:2px solid #0F1E3D}
+.D table.s td.gc{background:var(--c);color:#fff;font-weight:800;text-align:center}
+.D .cap{background:var(--c);color:#fff;border-radius:999px;height:19px;line-height:19px;padding:0 10px;font-weight:700;font-size:11px;text-align:center;overflow:hidden}
+.D .bandcell{color:#fff}
+
+/* ===== E안 : 묶음 머리띠형 ===== */
+.E table.s th,.E table.s td{border-right:1px solid #EDEEF2;border-bottom:1px solid #EDEEF2}
+.E table.s thead th{background:#fff;color:#6B7280;border-bottom:2px solid #1F2937;font-weight:600}
+.E table.s thead th.tod{color:#B9452F;background:#fff;border-bottom-color:#C0392B}
+.E table.s thead th.wk{color:#B5BAC4}
+.E tr.head td{background:var(--c);color:#fff;font-weight:800;font-size:12px;letter-spacing:1px;border-color:var(--c)}
+.E tr.head td.n{color:#fff}
+.E table.s tbody tr td{height:28px}
+.E table.s td.wk{background:#FAFAFB}
+.E .cap{background:var(--bc);color:var(--c);border:1px solid var(--c);border-radius:4px;height:18px;line-height:16px;padding:0 8px;font-weight:700;font-size:11px;text-align:center;overflow:hidden}
+.E table.s td.tod{box-shadow:inset 1px 0 0 #C0392B,inset -1px 0 0 #C0392B}
+.E .last{border-right:2px solid #CBD2DC}
+.E .bandcell{border:1.5px solid var(--c);color:var(--c);background:#fff}
+
+/* ===== F안 : 엑셀 고밀도형 ===== */
+.F table.s{font-size:11px}
+.F table.s th,.F table.s td{padding:1px 5px;border-right:1px solid #C8CDD6;border-bottom:1px solid #C8CDD6}
+.F table.s thead th{background:#E8EBF0;color:#1F2937;border-bottom:1px solid #9CA3AF}
+.F table.s thead th.mon{background:#2B3A67;color:#fff;font-size:11.5px;letter-spacing:1px}
+.F table.s thead th.tod{background:#C9A227;color:#20242C}
+.F table.s thead th.wk{background:#DFE2E8;color:#B9452F}
+.F table.s td.day{min-width:44px}
+.F table.s td.wk{background:#F0F1F4}
+.F tr.grp td{background:#CBD5EC;font-weight:700}
+.F tr.sub td{background:#E3E7F1;font-weight:700}
+.F table.s td.gc{background:var(--c);color:#fff;font-weight:800;text-align:center;writing-mode:vertical-rl;text-orientation:upright;letter-spacing:3px}
+.F table.s td.day.bar{background:var(--c);color:#fff;font-weight:700;border-right-color:rgba(255,255,255,.35)}
+.F table.s td.tod{box-shadow:inset 2px 0 0 #C0392B,inset -2px 0 0 #C0392B}
+.F .bandcell{color:#fff;border-radius:3px}
+.F .neg{color:#C0392B}
+</style></head>
+<body>
+<h1>출고 일정 — 꾸밈 방안 D · E · F</h1>
+<p class="d">앞의 A·B·C 와 같은 자료입니다. 상단 일정 띠에 <b>고쳐 쓰기(✎) · 빼기(✕) · 더하기</b> 를 다 넣었습니다. 시작일 칸(노란 칸)은 직접 고치는 칸입니다.</p>
+<div id="out"></div>
+<script>
+const BR=['파리','바니','세인트','핑','팬텀','링스'];
+const ROWS=[
+ {g:'이너',se:'F1',b:'파리',all:19949,st:'2026-11-24',en:'2026-11-26',did:12130},
+ {g:'이너',se:'F1',b:'팬텀',all:1163,st:'2026-11-26',en:'2026-11-27',did:0},
+ {g:'이너',se:'E1',b:'파리',all:26021,st:'2026-11-27',en:'2026-12-01',did:14351},
+ {g:'이너',se:'E1',b:'링스',all:1086,st:'2026-12-01',en:'2026-12-02',did:0},
+ {g:'이너',se:'D1',b:'파리',all:11005,st:'2026-12-02',en:'2026-12-03',did:3087},
+ {g:'이너',se:'F2',b:'링스',all:1123,st:'2026-12-03',en:'2026-12-04',did:0},
+ {g:'이너',se:'E2',b:'팬텀',all:1091,st:'2026-12-04',en:'2026-12-04',did:0},
+ {g:'JK',se:'F1',b:'파리',all:2431,st:'2026-11-24',en:'2026-11-25',did:0},
+ {g:'JK',se:'F1',b:'바니',all:2661,st:'2026-11-25',en:'2026-11-26',did:0},
+ {g:'JK',se:'F1',b:'세인트',all:965,st:'2026-11-26',en:'2026-11-26',did:0},
+ {g:'JK',se:'F1',b:'팬텀',all:14801,st:'2026-11-27',en:'2026-12-02',did:0},
+ {g:'JK',se:'E1',b:'파리',all:2799,st:'2026-12-02',en:'2026-12-03',did:1192},
+ {g:'JK',se:'E1',b:'팬텀',all:8923,st:'2026-12-03',en:'2026-12-07',did:0},
+ {g:'JK',se:'D1',b:'링스',all:2368,st:'2026-12-07',en:'2026-12-08',did:0},
+ {g:'ACC',se:'F1',b:'핑',all:860,st:'2026-11-24',en:'2026-11-24',did:0}];
+const GC={이너:'#1F3350',JK:'#B4660F',ACC:'#2F7A43'};
+const BC={이너:'#E3EBF8',JK:'#FBEEDC',ACC:'#E2F2E8'};
+const WD=['일','월','화','수','목','금','토'];
+const addD=(s,n)=>{const d=new Date(s+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)};
+const dow=(s)=>new Date(s+'T00:00:00Z').getUTCDay();
+const md=(s)=>(+s.slice(5,7))+'/'+(+s.slice(8,10));
+const fmt=(n)=>n?n.toLocaleString('ko-KR'):'';
+const TODAY='2026-11-27';
+let DS=[];{let d='2026-11-23';for(let i=0;i<24;i++){DS.push(d);d=addD(d,1)}}
+const BANDS=[{t:'반품/출고 일정',items:[{s:'2026-11-24',e:'2026-11-28',x:'3011 전배장 1차 봉의류',c:'#1E7A4B'},{s:'2026-12-01',e:'2026-12-05',x:'3021 전배장 2차 봉의류',c:'#8E3B4E'}]},
+ {t:'소터 작업 일정',items:[{s:'2026-11-24',e:'2026-12-02',x:'이월 티셔츠·자켓',c:'#2B3A67'},{s:'2026-12-03',e:'2026-12-10',x:'이월 바지',c:'#6B4C9A'}]}];
+const seOrd=(se)=>(se[1]==='2'?1:0)*10+({F:0,E:1,D:2,C:3}[se[0]]??9);
+const sorted=ROWS.slice().sort((a,b)=>({이너:0,JK:1,ACC:2}[a.g]-{이너:0,JK:1,ACC:2}[b.g])||(seOrd(a.se)-seOrd(b.se))||(BR.indexOf(a.b)-BR.indexOf(b.b)));
+const FX=[['days','일정<br>(일)','n'],['st','시작일','c'],['en','종료일','c'],['store','매장<br>지시','n'],['online','온라인<br>지시','n'],['rest','배분<br>잔량','n'],['did','작업<br>수량','n'],['gap','차이<br>수량','n']];
+const LW=[46,44,62];const FW=70;const L=(i)=>i<3?LW.slice(0,i).reduce((a,b)=>a+b,0):152+(i-3)*FW;
+const days=(r)=>(new Date(r.en)-new Date(r.st))/864e5+1;
+const val=(r)=>({days:days(r).toFixed(1),st:'<input class="dt" type="date" value="'+r.st+'">',en:md(r.en),
+ store:fmt(Math.round(r.all*.68)),online:fmt(Math.round(r.all*.24)),rest:fmt(r.all-Math.round(r.all*.68)-Math.round(r.all*.24)),
+ did:fmt(r.did),gap:fmt(r.all-r.did)});
+const sum=(ls)=>{const s=(f)=>ls.reduce((a,r)=>a+f(r),0);const t=s(r=>r.all);
+ return{days:s(days).toFixed(1),st:md(ls.map(r=>r.st).sort()[0]),en:md(ls.map(r=>r.en).sort().pop()),
+ store:fmt(Math.round(t*.68)),online:fmt(Math.round(t*.24)),rest:fmt(t-Math.round(t*.68)-Math.round(t*.24)),did:fmt(s(r=>r.did)),gap:fmt(t-s(r=>r.did))}};
+const dayAttr=(d)=>'day'+(d===TODAY?' tod':'')+((dow(d)===0||dow(d)===6)?' wk':'');
+
+function bandRows(v){let h='';BANDS.forEach(B=>{
+ h+='<tr class="bandrow"><td class="st c" style="left:0" colspan="3"><b>'+B.t+'</b></td>'
+  +'<td class="st c last" style="left:152px" colspan="'+FX.length+'"><span class="tools">띠를 눌러 ✎고치기 · ✕빼기</span></td>';
+ let i=0;while(i<DS.length){const it=B.items.find(x=>DS[i]>=x.s&&DS[i]<=x.e);
+  if(it&&DS[i]===it.s){const n=DS.filter(d=>d>=it.s&&d<=it.e).length;
+   h+='<td class="'+dayAttr(DS[i])+' c" colspan="'+n+'" style="--c:'+it.c+'"><div class="bandcell" style="background:'+(v==='E'?'#fff':it.c)+';--c:'+it.c+'"><span class="bx">'+it.x+'<i title="고치기">✎</i><i title="빼기">✕</i></span></div></td>';i+=n}
+  else{h+='<td class="'+dayAttr(DS[i])+'"></td>';i++}}
+ h+='</tr>'});return h}
+
+function capRow(r,v){ // 둥근 띠 — 시작~종료를 한 칸으로 합쳐 그린다
+ let h='',i=0;const n=DS.filter(d=>d>=r.st&&d<=r.en).length;
+ while(i<DS.length){const d=DS[i];
+  if(d===r.st){h+='<td class="'+dayAttr(d)+' c" colspan="'+n+'" style="--c:'+GC[r.g]+';--bc:'+BC[r.g]+'"><div class="cap">'+r.b+' '+r.se+' · '+fmt(r.all)+'장</div></td>';i+=n}
+  else{h+='<td class="'+dayAttr(d)+'">'+((d===r.st&&r.did)?fmt(r.did):'')+'</td>';i++}}
+ return h}
+function cellRow(r){return DS.map(d=>{const on=d>=r.st&&d<=r.en;
+ return '<td class="'+dayAttr(d)+(on?' bar':'')+'" style="--c:'+GC[r.g]+'">'+((d===r.st&&r.did)?fmt(r.did):'')+'</td>'}).join('')}
+
+function table(v){
+ let h='<table class="s"><thead>';
+ if(v==='F'){ // 월 묶음 머리줄
+  h+='<tr><th class="st c" style="left:0;top:0" colspan="3">기간</th><th class="st c last" style="left:152px;top:0" colspan="'+FX.length+'">— </th>';
+  let i=0;while(i<DS.length){const m=DS[i].slice(0,7);const n=DS.filter(d=>d.slice(0,7)===m).length;
+   h+='<th class="c mon" style="top:0" colspan="'+n+'">'+(+m.slice(5,7))+'월</th>';i+=n}
+  h+='</tr>'}
+ const top=v==='F'?'22px':'0';
+ h+='<tr><th class="st c" style="left:0;top:'+top+';min-width:46px">복종</th><th class="st c" style="left:46px;top:'+top+';min-width:44px">시즌</th><th class="st c" style="left:90px;top:'+top+';min-width:62px">브랜드</th>'
+  +FX.map(([k,l,c],i)=>'<th class="st '+c+(i===FX.length-1?' last':'')+'" style="left:'+(152+i*FW)+'px;top:'+top+';min-width:'+FW+'px">'+l+'</th>').join('')
+  +DS.map(d=>'<th class="c '+dayAttr(d)+'" style="top:'+top+'">'+md(d)+'<br>'+WD[dow(d)]+'</th>').join('')+'</tr></thead><tbody>';
+ h+=bandRows(v);
+ ['이너','JK','ACC'].forEach(g=>{
+  const ls=sorted.filter(r=>r.g===g);if(!ls.length)return;const sv=sum(ls);
+  if(v==='E'){
+   h+='<tr class="head" style="--c:'+GC[g]+'"><td class="st c" style="left:0" colspan="3">'+g+'  TOTAL</td>'
+    +FX.map(([k,,c],i)=>'<td class="st '+c+(i===FX.length-1?' last':'')+'" style="left:'+(152+i*FW)+'px;background:'+GC[g]+';color:#fff">'+sv[k]+'</td>').join('')
+    +DS.map(d=>'<td class="'+dayAttr(d)+'" style="background:'+GC[g]+'"></td>').join('')+'</tr>';
+  }else{
+   h+='<tr class="grp" style="--c:'+GC[g]+'"><td class="st gc c" style="left:0;--c:'+GC[g]+'" rowspan="'+(ls.length+1)+'">'+g+'</td>'
+    +'<td class="st c" style="left:46px" colspan="2"><b>TOTAL</b></td>'
+    +FX.map(([k,,c],i)=>'<td class="st '+c+(i===FX.length-1?' last':'')+'" style="left:'+(152+i*FW)+'px">'+sv[k]+'</td>').join('')
+    +DS.map(d=>'<td class="'+dayAttr(d)+'"></td>').join('')+'</tr>';
+  }
+  ls.forEach(r=>{const vv=val(r);
+   h+='<tr>'+(v==='E'?'<td class="st c" style="left:0">'+r.g+'</td>':'')
+    +'<td class="st c" style="left:46px">'+r.se+'</td><td class="st" style="left:90px">'+r.b+'</td>'
+    +FX.map(([k,,c],i)=>'<td class="st '+c+(i===FX.length-1?' last':'')+(k==='gap'?' neg':'')+'" style="left:'+(152+i*FW)+'px">'+vv[k]+'</td>').join('')
+    +(v==='F'?cellRow(r):capRow(r,v))+'</tr>'});
+ });
+ return h+'</tbody></table>'}
+const flt='<div class="flt"><b>거르기</b><span class="chip on">복종 전체</span><span class="chip">이너</span><span class="chip">JK</span><span class="chip">ACC</span>'
+ +'<select><option>브랜드 전체</option><option>파리</option><option>바니</option><option>세인트</option><option>핑</option><option>팬텀</option><option>링스</option></select>'
+ +'<select><option>시즌 전체</option><option>F1</option><option>E1</option><option>D1</option><option>F2</option><option>E2</option></select>'
+ +'<input type="date" value="2026-11-23"> ~ <input type="date" value="2026-12-16">'
+ +'<span class="chip">매장지시 있는 것만</span><span class="chip">일정 남은 것만</span></div>';
+const add='<div class="addrow"><select><option>반품/출고 일정</option><option>소터 작업 일정</option><option>기타 일정</option></select>'
+ +'<input type="date" value="2026-11-24"> ~ <input type="date" value="2026-11-28">'
+ +'<input placeholder="내용 (예: 3082 최종산물)" style="width:220px"><button>더하기</button>'
+ +'<span style="margin-left:4px">띠 안의 <b>✎</b> 는 고치기 · <b>✕</b> 는 빼기</span></div>';
+const T=[['D','띠 간트형','날짜 칸을 네모로 칠하지 않고 <b>둥근 띠 하나</b>로 이어 그립니다. 띠 안에 브랜드·시즌·수량이 적혀 있어 왼쪽 칸을 안 봐도 무엇인지 압니다. 줄 간격을 넓혀 눈이 편합니다.'],
+ ['E','묶음 머리띠형','복종그룹마다 <b>줄 전체를 색 머리띠</b>로 끊습니다. 자료 줄은 흰 바탕이라 숫자가 또렷하고, 일정은 테두리만 있는 옅은 막대. 가장 조용하고 깔끔합니다.'],
+ ['F','엑셀 고밀도형','안성센터 엑셀처럼 <b>촘촘하게</b> — 머리글이 두 줄(월 · 날짜)이고 격자가 뚜렷합니다. 한 화면에 날짜가 가장 많이 들어가고, 차이수량은 빨강입니다.']];
+document.getElementById('out').innerHTML=T.map(([k,t,d])=>
+ '<div class="'+k+'"><h2><span class="no">'+k+'안</span>'+t+'</h2><p class="d">'+d+'</p><div class="box">'+flt+table(k)+add
+ +'<div class="hint">노란 칸 = <b>시작일 직접 고치기</b> · 띠나 막대를 끌면 일정이 옮겨지고, 빈 곳을 끌면 표가 움직입니다</div></div></div>').join('');
+</script>
+</body></html>

@@ -1,0 +1,7 @@
+node_modules/
+test/shots/
+installer/install.log
+# 회사 실제 자료 · 열쇠는 절대 저장소에 넣지 않음
+real/
+*.secret
+.env

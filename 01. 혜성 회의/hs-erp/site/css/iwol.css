@@ -1,0 +1,81 @@
+/* 이월팀 — 시즌반품정리현황 · 선지시출고현황 (2026-11-24)
+ *  ⚠ app.css 와 이름이 겹치지 않게 모든 규칙을 .iwol 안에서만 쓴다.
+ *     (.drop · .card · .sub · .tot 같은 이름은 전역이라 그냥 쓰면 다른 화면이 망가진다)
+ *  ⚠ 새 이름은 전부 iw 로 시작. 일정 표 안쪽 이름(st · dy · tot …)은 .iwol .iwsched 안에서만 쓴다.
+ */
+.iwol .iwm { color: #6B7280; }
+.iwol .iwhide { display: none; }
+.iwol .iwtw { overflow: auto; max-width: 100%; }
+.iwol table { border-collapse: collapse; font-size: 12.5px; width: 100%; }
+.iwol th, .iwol td { border: 1px solid #E5E7EB; padding: 5px 8px; text-align: left; white-space: nowrap; }
+.iwol th { background: #F6F7FA; color: #4B5563; font-weight: 600; text-align: center; }
+.iwol td.n, .iwol th.n { text-align: right; }
+.iwol tr.iwtot td { background: #DCE3F5; font-weight: 700; }
+.iwol .card.iwbad { border-color: #E8B4B4; background: #FFF7F7; }
+.iwol .card.iwbad h3 { color: #B23A3A; }
+
+/* 엑셀 놓는 칸 */
+.iwol .iwdrop { border: 2px dashed #C7D0E0; background: #FAFBFD; border-radius: 12px; padding: 18px 16px; text-align: center; cursor: pointer; margin-bottom: 14px; }
+.iwol .iwdrop.over { border-color: #C9A227; background: #FFFBEA; }
+
+/* 요약 칸 */
+.iwol .iwkps { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 14px; }
+.iwol .iwkc { background: #fff; border: 1px solid #E5E7EB; border-radius: 12px; padding: 10px 12px; }
+.iwol .iwkc i { font-style: normal; font-size: 12px; color: #6B7280; display: block; }
+.iwol .iwkc b { font-size: 19px; }
+.iwol .iwkc b small { font-weight: 400; color: #6B7280; }
+
+/* 기준값 · 거르기 */
+.iwol .iwsetw { display: flex; gap: 10px; flex-wrap: wrap; }
+.iwol .iwsetw .in { width: 132px; }
+.iwol .iwf { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #6B7280; }
+.iwol .iwflt { display: flex; gap: 18px; flex-wrap: wrap; align-items: flex-start; }
+.iwol .iwflt .fg { display: flex; gap: 8px; align-items: flex-start; }
+.iwol .iwflt .t { font-size: 12px; color: #6B7280; padding-top: 5px; white-space: nowrap; }
+.iwol .iwflt .chips { display: flex; gap: 5px; flex-wrap: wrap; }
+.iwol .iwchip { border: 1px solid #C7D0E0; border-radius: 999px; padding: 3px 11px; font-size: 12px; cursor: pointer; background: #fff; user-select: none; }
+.iwol .iwchip:hover { background: #F2F5FA; }
+.iwol .iwchip.on { background: #0F1E3D; color: #fff; border-color: #0F1E3D; }
+.iwol .iwchip.x { border-style: dashed; color: #6B7280; }
+.iwol .iwaddb { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+.iwol .in.sm { padding: 2px 6px; font-size: 12px; height: 26px; }
+
+/* 일정 표 — F안(엑셀 고밀도) */
+.iwol table.iwsched { border-collapse: separate; border-spacing: 0; width: max-content; font-size: 11px; }
+.iwol table.iwsched th, .iwol table.iwsched td { border-right: 1px solid #C8CDD6; border-bottom: 1px solid #C8CDD6; border-left: 0; border-top: 0; padding: 1px 5px; }
+.iwol table.iwsched td.dy, .iwol table.iwsched th.dy { min-width: 46px; text-align: right; }
+.iwol table.iwsched th.dy, .iwol table.iwsched td.dy.c { text-align: center; }
+.iwol table.iwsched .st { position: sticky; z-index: 3; background: #fff; overflow: hidden; text-overflow: ellipsis; }
+.iwol table.iwsched thead .st { background: #E8EBF0; z-index: 4; font-weight: 700; color: #1F2430; }
+.iwol table.iwsched .st.last { border-right: 2px solid #6B7280; }
+.iwol table.iwsched thead th.dy { background: #E8EBF0; color: #1F2430; font-weight: 700; border-bottom: 1px solid #9CA3AF; }
+.iwol table.iwsched thead th.dy .w { font-weight: 400; color: #6B7280; }
+.iwol table.iwsched thead th.dy.wk { background: #DFE2E8; color: #B9452F; }
+.iwol table.iwsched thead th.dy.wk .w { color: #B9452F; }
+.iwol table.iwsched thead th.dy.tod { background: #C9A227; color: #20242C; }
+.iwol table.iwsched thead th.dy.tod .w { color: #20242C; }
+.iwol table.iwsched th.mon { background: #2B3A67; color: #fff; letter-spacing: 1px; text-align: center; font-size: 11.5px; }
+.iwol table.iwsched tr.mo .st { background: #2B3A67; color: #fff; }
+.iwol table.iwsched tr.bd .st.lane { background: #F4F6F9; color: #1F2430; }
+.iwol table.iwsched tr.bd td.dy { background: #FAFBFC; padding: 2px 3px; }
+.iwol table.iwsched .iwband { color: #fff; border-radius: 3px; padding: 1px 8px; font-weight: 700; font-size: 10.5px; text-align: center; overflow: hidden; cursor: pointer; }
+.iwol table.iwsched .iwband i { font-style: normal; margin-left: 4px; opacity: .8; cursor: pointer; }
+.iwol table.iwsched .iwband i:hover { opacity: 1; }
+.iwol table.iwsched td.dy.wk { background: #F0F1F4; }
+.iwol table.iwsched td.dy.tod { box-shadow: inset 2px 0 0 #C0392B, inset -2px 0 0 #C0392B; }
+.iwol table.iwsched td.gc { background: var(--c); color: #fff; font-weight: 800; text-align: center; writing-mode: vertical-rl; text-orientation: upright; letter-spacing: 3px; }
+.iwol table.iwsched tbody tr { --c: #44506B; }
+.iwol table.iwsched tbody tr.tot .st { background: #CBD5EC; }
+.iwol table.iwsched tbody tr.sub .st { background: #E3E7F1; }
+.iwol table.iwsched tbody tr.tot td.gc, .iwol table.iwsched tbody tr.pg td.gc { background: var(--c); }
+.iwol table.iwsched tbody td.dy.bar { background: var(--c, #44506B); color: #fff; font-weight: 700; border-right-color: rgba(255,255,255,.3); cursor: grab; }
+.iwol table.iwsched td.neg { color: #C0392B; }
+.iwol table.iwsched tfoot .st { background: #B9C6E6; font-weight: 700; border-top: 2px solid #6B7280; }
+.iwol table.iwsched tfoot td.dy { background: #EEF1F8; font-weight: 700; border-top: 2px solid #6B7280; }
+.iwol table.iwsched tfoot td.gc { background: var(--c); }
+.iwol table.iwsched tr.pm td.dy { background: #FFFDF0; }
+.iwol table.iwsched tr.pp td.dy { background: #F4F6F9; font-weight: 700; }
+.iwol .iwgt.pan { cursor: grabbing; user-select: none; }
+.iwol .iwdt { border: 1px solid #9CA3AF; border-radius: 4px; padding: 0 2px; font-size: 10.5px; width: 100px; background: #FFFDF0; font-family: inherit; }
+.iwol .iwdt.man { border-color: #C9A227; background: #FFF3CD; font-weight: 700; }
+.iwol .iwmn { border: 1px solid #C7D0E0; border-radius: 4px; padding: 0 2px; font-size: 10.5px; width: 40px; text-align: right; background: #FFFDF0; font-family: inherit; }

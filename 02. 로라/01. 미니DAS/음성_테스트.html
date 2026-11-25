@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>로라 미니 DAS — 음성 테스트</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#EEF1F5;font-family:'Malgun Gothic','맑은 고딕',sans-serif;color:#1B2430;font-size:16px;padding:22px}
+h1{font-size:24px;margin:0 0 4px}
+.sub{color:#5B6675;font-size:14.5px;margin-bottom:16px;line-height:1.6}
+.card{background:#fff;border:1px solid #C9D1DC;border-radius:12px;padding:16px 18px;margin-bottom:14px;max-width:1000px}
+.card h3{margin:0 0 10px;font-size:18px}
+.card h3 b{background:#1F4E8C;color:#fff;border-radius:6px;padding:2px 10px;font-size:14px;margin-right:8px}
+.opt{display:flex;gap:10px;flex-wrap:wrap}
+.opt button{flex:1;min-width:210px;text-align:left;background:#fff;border:2px solid #C9D1DC;border-radius:10px;padding:11px 13px;font-family:inherit;font-size:15px;cursor:pointer;line-height:1.5}
+.opt button b{display:block;font-size:17px}
+.opt button span{color:#5B6675;font-size:13.5px}
+.opt button.on{border-color:#1F4E8C;background:#EAF2FF}
+.play{display:flex;gap:10px;flex-wrap:wrap}
+.play button{background:#1F4E8C;color:#fff;border:0;border-radius:10px;padding:16px 20px;font-family:inherit;font-size:19px;font-weight:700;cursor:pointer;min-width:150px}
+.play button:active{background:#163A69}
+.said{background:#E9F2FF;border:1px solid #B7D0F2;border-radius:9px;padding:11px 14px;font-size:18px;margin-top:12px;min-height:48px}
+.said b{color:#1F4E8C}
+.row{display:flex;gap:18px;align-items:center;flex-wrap:wrap;font-size:15px}
+.row input[type=range]{width:220px;vertical-align:middle}
+select{font-family:inherit;font-size:14.5px;padding:6px 8px;border:1px solid #C9D1DC;border-radius:6px;max-width:360px}
+.pick{background:#FFF4C2;border:2px solid #E8B100;border-radius:10px;padding:12px 15px;font-size:17px;font-weight:700;max-width:1000px}
+</style>
+</head>
+<body>
+<h1>로라 미니 DAS — 음성 테스트</h1>
+<div class="sub">① 과 ② 를 고르고 ③ 의 버튼을 눌러 들어 보세요. 마음에 드는 조합을 알려 주시면 그대로 미니 DAS에 넣습니다.<br>처음 한 번은 아무 버튼이나 눌러야 소리가 켜집니다 (브라우저 규칙).</div>
+
+<div class="card">
+  <h3><b>①</b>앞 글자 끊김 고치는 방식</h3>
+  <div class="opt" id="mode">
+    <button data-v="0"><b>가. 지금 방식</b><span>말하기 전 0.5초 기다림 (비교용)</span></button>
+    <button data-v="1"><b>나. 스피커 계속 켜 두기</b><span>들리지 않는 소리를 계속 틀어 스피커가 잠들지 않게 함</span></button>
+    <button data-v="2" class="on"><b>다. 계속 켜 두기 + 소리 없는 앞말</b><span>진짜 말 앞에 소리 없는 한 글자를 먼저 말해 음성을 미리 깨움 (추천)</span></button>
+    <button data-v="3"><b>라. 다 + 앞에 "자,"</b><span>그래도 끊기면 — 끊겨도 되는 말을 앞에 붙임</span></button>
+  </div>
+</div>
+
+<div class="card">
+  <h3><b>②</b>숫자 읽는 방식</h3>
+  <div class="opt" id="num">
+    <button data-v="0" class="on"><b>A. "이십삼 번, 두 개"</b><span>번호는 이십삼 · 수량은 한 개 두 개 세 개</span></button>
+    <button data-v="1"><b>B. "이십삼 번, 이 개"</b><span>번호 · 수량 모두 일 이 삼</span></button>
+    <button data-v="2"><b>C. "이십삼 번, 수량 이"</b><span>번호 · 수량 모두 일 이 삼 · '개' 대신 '수량'</span></button>
+  </div>
+</div>
+
+<div class="card">
+  <h3><b>③</b>들어 보기</h3>
+  <div class="play" id="play">
+    <button data-no="23" data-q="2">23번 · 2개</button>
+    <button data-no="1" data-q="1">1번 · 1개</button>
+    <button data-no="18" data-q="3">18번 · 3개</button>
+    <button data-no="67" data-q="12">67번 · 12개</button>
+    <button data-no="105" data-q="20">105번 · 20개</button>
+    <button data-seq="1" style="background:#2E8B57">연속 5번 (실제 작업처럼)</button>
+  </div>
+  <div class="said" id="said">여기에 읽는 문장이 나옵니다</div>
+  <div class="row" style="margin-top:14px">
+    <span>속도 <input type="range" id="rate" min="0.5" max="2" step="0.1" value="1"> <b id="rateV">1.0배</b></span>
+    <span>기다림 <input type="range" id="delay" min="0" max="1.5" step="0.1" value="0.5"> <b id="delayV">0.5초</b></span>
+    <span>목소리 <select id="voice"></select></span>
+  </div>
+</div>
+
+<div class="pick" id="pick"></div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var mode = 2, num = 0, actx = null, keep = null, timer = null;
+
+  // 숫자 → 일 이 삼 (한자어) : 23 → 이십삼
+  var D = ['', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구'], U = ['', '십', '백', '천'];
+  function sino(n) { n = Math.floor(+n); if (!(n > 0)) return '영'; if (n > 9999) return String(n); var s = String(n), o = ''; for (var i = 0; i < s.length; i++) { var d = +s[i], u = s.length - 1 - i; if (!d) continue; o += (d === 1 && u > 0 ? '' : D[d]) + U[u]; } return o; }
+  // 숫자 → 한 두 세 (고유어)
+  var N1 = ['', '한', '두', '세', '네', '다섯', '여섯', '일곱', '여덟', '아홉'], N10 = ['', '열', '스물', '서른', '마흔', '쉰', '예순', '일흔', '여든', '아흔'];
+  function native(n) { if (n < 1 || n > 99) return sino(n); if (n === 20) return '스무'; return N10[Math.floor(n / 10)] + N1[n % 10]; }
+  function text(no, q) {
+    var a = sino(no) + ' 번, ';
+    if (num === 0) return a + native(+q) + ' 개';
+    if (num === 1) return a + sino(q) + ' 개';
+    return a + '수량 ' + sino(q);
+  }
+
+  function audio() { try { if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === 'suspended') actx.resume(); } catch (e) { actx = null; } return actx; }
+  function keepAwake(on) { // 들리지 않는 소리를 계속 틀어 스피커(블루투스 · 모니터 스피커)가 잠들지 않게
+    var a = audio(); if (!a) return;
+    if (on && !keep) { var o = a.createOscillator(), g = a.createGain(); o.frequency.value = 30; g.gain.value = 0.002; o.connect(g); g.connect(a.destination); o.start(); keep = o; }
+    if (!on && keep) { try { keep.stop(); } catch (e) { } keep = null; }
+  }
+  function voiceObj() { var vs = speechSynthesis.getVoices(), nm = $('voice').value, v = null; vs.forEach(function (x) { if (x.name === nm) v = x; }); if (!v) vs.forEach(function (x) { if (!v && /^ko/i.test(x.lang)) v = x; }); return v; }
+  function utter(t, vol) { var u = new SpeechSynthesisUtterance(t); u.lang = 'ko-KR'; u.rate = +$('rate').value; u.volume = vol; var v = voiceObj(); if (v) u.voice = v; return u; }
+  function say(t) {
+    $('said').innerHTML = '🔊 <b>"' + (mode === 3 ? '자, ' : '') + t + '"</b>';
+    clearTimeout(timer);
+    keepAwake(mode >= 1);
+    var d = +$('delay').value * 1000;
+    if (mode === 0) { // 지금 방식: 끊고 → 기다렸다 말함
+      speechSynthesis.cancel();
+      timer = setTimeout(function () { speechSynthesis.speak(utter(t, 1)); }, d);
+      return;
+    }
+    // 새 방식: 말하는 중일 때만 끊음 (끊자마자 말하면 앞이 잘림)
+    var busy = speechSynthesis.speaking || speechSynthesis.pending;
+    if (busy) speechSynthesis.cancel();
+    timer = setTimeout(function () {
+      if (mode >= 2) speechSynthesis.speak(utter('아', 0)); // 소리 없는 앞말
+      speechSynthesis.speak(utter((mode === 3 ? '자, ' : '') + t, 1));
+    }, busy ? Math.max(d, 150) : d);
+  }
+
+  function paint() {
+    [].forEach.call($('mode').children, function (b) { b.className = +b.getAttribute('data-v') === mode ? 'on' : ''; });
+    [].forEach.call($('num').children, function (b) { b.className = +b.getAttribute('data-v') === num ? 'on' : ''; });
+    $('pick').textContent = '지금 고른 조합: ' + ['가', '나', '다', '라'][mode] + ' + ' + ['A', 'B', 'C'][num] + ' · 속도 ' + (+$('rate').value).toFixed(1) + '배 · 기다림 ' + (+$('delay').value).toFixed(1) + '초  →  이 줄을 그대로 알려 주세요';
+  }
+  $('mode').onclick = function (e) { var b = e.target.closest('button'); if (!b) return; mode = +b.getAttribute('data-v'); paint(); };
+  $('num').onclick = function (e) { var b = e.target.closest('button'); if (!b) return; num = +b.getAttribute('data-v'); paint(); };
+  $('play').onclick = function (e) {
+    var b = e.target.closest('button'); if (!b) return; audio();
+    if (b.getAttribute('data-seq')) { var L = [[18, 1], [23, 2], [25, 2], [27, 1], [32, 3]], i = 0; (function one() { if (i >= L.length) return; say(text(L[i][0], L[i][1])); i++; setTimeout(one, 2600); })(); return; }
+    say(text(b.getAttribute('data-no'), b.getAttribute('data-q')));
+  };
+  $('rate').oninput = function () { $('rateV').textContent = (+this.value).toFixed(1) + '배'; paint(); };
+  $('delay').oninput = function () { $('delayV').textContent = (+this.value).toFixed(1) + '초'; paint(); };
+  function voices() { var vs = speechSynthesis.getVoices(), ko = vs.filter(function (v) { return /^ko/i.test(v.lang); }); $('voice').innerHTML = '<option value="">자동 (한국어 첫 번째)</option>' + ko.map(function (v) { return '<option>' + v.name + '</option>'; }).join(''); }
+  speechSynthesis.onvoiceschanged = voices; voices(); paint();
+  window.T = { sino: sino, native: native, text: text };
+})();
+</script>
+</body>
+</html>

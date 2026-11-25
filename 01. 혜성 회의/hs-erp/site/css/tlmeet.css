@@ -1,0 +1,65 @@
+/* 팀장 자체 회의록 (views-tlmeet.js · 2026-11-25) — 다른 화면과 섞이지 않게 tl 로 시작하는 이름만 씀 */
+.tlsel{min-width:310px}
+.tlm{display:flex;gap:16px;align-items:flex-start}
+.tltoc{width:176px;flex-shrink:0;position:sticky;top:72px}
+.tltoc .card{padding:12px 0}
+.tltoc a{display:flex;justify-content:space-between;gap:6px;padding:7px 14px;cursor:pointer;color:var(--ink);text-decoration:none;font-size:12.5px;border-left:3px solid transparent}
+.tltoc a:hover{background:#F4F6FB}.tltoc a.on{background:#EEF3FD;border-left-color:var(--blue);font-weight:700}
+.tltoc a span{font-size:11.5px;white-space:nowrap}
+.tlmain{flex:1;min-width:0}
+.tlpt{display:none}
+.tlhd .tlh1{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;margin-bottom:10px}.tlhd .tlh1 b{font-size:15px}
+.tldg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tld{border-radius:8px;padding:10px 14px;font-size:12.5px;line-height:1.6}
+.tld.c{background:#FFF6DA;border-left:4px solid var(--gold)}.tld.g{background:#EAF0FD;border-left:4px solid var(--blue)}
+.tld ol{margin:4px 0 0;padding-left:20px}.tld li{cursor:pointer}.tld li:hover{text-decoration:underline}
+.tlt{color:var(--mute);font-size:11.5px}
+.tlsec{scroll-margin-top:72px}
+.tlsec h3{border-bottom:2px solid var(--navy);padding-bottom:8px;font-size:14.5px}
+.tlsec h3 .tln{color:var(--navy)}
+.tle{padding:6px 2px 2px;font-size:12px}
+table.tlx{width:100%;border-collapse:collapse;font-size:12.5px}
+table.tlx th{background:#F7F8FA;color:var(--mute);font-weight:600;font-size:11.5px;text-align:left;padding:7px 8px;border-bottom:1px solid var(--line)}
+table.tlx td{padding:9px 8px;border-bottom:1px solid var(--line2);vertical-align:top}
+table.tlx td.no{color:var(--mute);text-align:center}
+table.tlx td.ac{white-space:nowrap;text-align:right}table.tlx td.ac .btn{padding:3px 7px;margin-left:2px}
+table.tlx td.nt{line-height:1.5}
+table.tlx tr.st-late td{background:#FFF8F6}
+table.tlx tr.tlhi td{background:#FFF3C4;transition:background .3s}
+.tti{font-weight:700;font-size:13px}
+.tdt{line-height:1.6;margin-top:3px}
+.tdd{border-radius:6px;padding:5px 9px;font-size:12px;line-height:1.5;margin-top:6px}
+.tdd.c{background:#FFF6DA;border-left:3px solid var(--gold)}.tdd.g{background:#EAF0FD;border-left:3px solid var(--blue)}
+.nw{white-space:nowrap}
+.tls{display:inline-block;border-radius:10px;padding:2px 9px;font-size:11.5px;font-weight:700;white-space:nowrap}
+.tls.run{background:#E6EDFC;color:var(--blue)}.tls.done{background:#E3F3EB;color:var(--pos)}.tls.late{background:#FBE7E3;color:var(--neg)}.tls.wait{background:#EEF0F4;color:var(--mute)}
+.tlb{margin:6px 0 2px;height:6px}.tlb i{background:var(--blue)}
+tr.st-late .tlb i{background:var(--neg)}
+/* 첨부 미리보기 */
+.tlfs{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.tlf{position:relative;width:108px;border:1px solid var(--line);border-radius:7px;overflow:hidden;background:#fff;cursor:pointer;font-size:11px}
+.tlf:hover{border-color:var(--blue);box-shadow:0 2px 8px rgba(47,91,211,.15)}
+.tlf .im{height:70px;display:flex;align-items:center;justify-content:center;background:#E9EDF3 center/cover no-repeat;font-weight:800;font-size:17px;color:#9AA3B5}
+.tlf .im.t-p{background:#FDECEA;color:#C2412D}.tlf .im.t-x{background:#E5F4EC;color:#1F8A5B}.tlf .im.t-h{background:#E6F0FB;color:#2F5BD3}.tlf .im.t-k{background:#FDF0E4;color:#C46A12}.tlf .im.t-o{background:#EEF0F4;color:var(--mute)}
+.tlf .nm{padding:4px 6px;border-top:1px solid var(--line2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tlf .fx{position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;border:0;background:rgba(15,30,61,.7);color:#fff;font-size:13px;line-height:20px;padding:0;cursor:pointer;display:none}
+.tlf:hover .fx{display:block}
+.tlv{text-align:center;background:#F4F5F8;border-radius:8px}.tlv img{max-width:100%;max-height:72vh}
+.tlpdf{width:100%;height:72vh;border:0;border-radius:6px;background:#F4F5F8}
+/* 쓰기 창 */
+.tlform textarea.in{min-height:56px}
+.tlform label.f em{font-style:normal;color:var(--mute);font-weight:400}
+.tlform .tlc textarea{background:#FFFCF0}.tlform .tlg textarea{background:#F6F9FF}
+.tlform textarea:disabled{background:#F4F5F8!important;color:var(--mute)}
+.tlform div.f{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mute);white-space:normal}
+.tldrop{border:2px dashed #C9D0DC;border-radius:8px;padding:12px;text-align:center;color:var(--ink);font-size:12.5px;line-height:1.8}
+.tldrop.on{border-color:var(--blue);background:#EEF3FD}
+.tlpend{display:flex;flex-wrap:wrap;gap:6px}.tlpend .pf{border:1px solid var(--line);border-radius:6px;padding:3px 8px;font-size:12px;color:var(--ink)}
+.tlpend .pf.new{border-color:#B9CBF5;background:#F3F6FE}.tlpend .pf a{cursor:pointer;color:var(--neg);font-weight:700;margin-left:4px}
+@media (max-width:900px){.tlm{flex-direction:column}.tltoc{position:static;width:100%}.tldg{grid-template-columns:1fr}}
+@media print{
+  .noprint,.tltoc,.tlsel{display:none!important}
+  .tlm{display:block}.tlpt{display:block;font-size:17px;font-weight:700;margin:0 0 8px}
+  .tlsec{break-inside:auto}.tlsec tr{break-inside:avoid}
+  .tlf .fx{display:none!important}
+}

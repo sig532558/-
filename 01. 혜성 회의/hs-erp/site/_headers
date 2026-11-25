@@ -1,0 +1,20 @@
+# 혜성물류 운영 ERP — 보안 헤더 (방화벽 ④) · Cloudflare Pages가 자동 적용
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.supabase.co; font-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com https://*.supabase.co blob:; worker-src 'self' blob:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Cross-Origin-Opener-Policy: same-origin
+/js/*
+  Cache-Control: no-cache
+/css/*
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
+# 홈 화면 어플 (2026-11-23) — 이 두 파일이 캐시에 묶이면 고친 내용이 휴대폰에 늦게 들어감
+/sw.js
+  Cache-Control: no-cache
+/manifest.webmanifest
+  Cache-Control: no-cache

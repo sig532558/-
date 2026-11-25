@@ -1,0 +1,111 @@
+/* 이월팀 출고관리 단독판 — 화면 (2026-11-23) */
+*{box-sizing:border-box}
+body{margin:0;font:14px/1.5 'Malgun Gothic','맑은 고딕',system-ui,sans-serif;color:#1F2430;background:#F4F5F8}
+.wrap{display:flex;min-height:100vh}
+.side{width:216px;flex:0 0 216px;background:#0F1E3D;color:#E7EAF2;padding:14px 12px;display:flex;flex-direction:column;gap:12px}
+.side .bd b{display:block;font-size:16px;color:#fff}
+.side .mute{color:#9AA6C2}
+.side .warn{background:#1B2E55;border-radius:8px;padding:8px 10px;font-size:12px;color:#C9D4EC}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav a{color:#C9D4EC;text-decoration:none;padding:8px 10px;border-radius:8px;font-size:13.5px}
+.nav a:hover{background:#1B2E55}
+.nav a.on{background:#C9A227;color:#0F1E3D;font-weight:700}
+.keep{margin-top:auto;font-size:12.5px;line-height:1.9;border-top:1px solid #2A3C66;padding-top:10px}
+.keep b{display:block;color:#fff;margin-bottom:4px}
+.keep a{color:#C9A227}
+.main{flex:1;min-width:0;padding:14px 16px 40px}
+.top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.top h2{margin:0;font-size:19px}
+.sp{flex:1}
+.card{background:#fff;border:1px solid #E5E7EB;border-radius:12px;padding:14px 16px;margin-bottom:14px}
+.card h3{margin:0 0 10px;font-size:15px;display:flex;align-items:center;gap:8px}
+.card h3 small{font-weight:400;color:#6B7280;font-size:12px}
+.empty{color:#6B7280;text-align:center;padding:26px 10px;font-size:13px}
+.mute{color:#6B7280}
+.neg{color:#C0392B}
+.drop{border:2px dashed #C7D0E0;background:#FAFBFD;border-radius:12px;padding:22px 16px;text-align:center;cursor:pointer;margin-bottom:14px}
+.drop.over{border-color:#C9A227;background:#FFFBEA}
+.hide{display:none}
+.btn{border:1px solid #C7D0E0;background:#fff;border-radius:8px;padding:6px 12px;font-size:13px;cursor:pointer}
+.btn:hover{background:#F2F5FA}
+.btn.p{background:#0F1E3D;color:#fff;border-color:#0F1E3D}
+.btn.sm{padding:3px 9px;font-size:12px}
+.in{border:1px solid #C7D0E0;border-radius:8px;padding:6px 8px;font-size:13px;font-family:inherit}
+.f{display:flex;flex-direction:column;gap:4px;font-size:12px;color:#6B7280}
+.setw{display:flex;gap:10px;flex-wrap:wrap}
+.setw .in{width:132px}
+.kps{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
+.kc{background:#fff;border:1px solid #E5E7EB;border-radius:12px;padding:10px 12px}
+.kc i{font-style:normal;font-size:12px;color:#6B7280;display:block}
+.kc b{font-size:19px}
+.tw{overflow:auto;max-width:100%}
+table{border-collapse:collapse;font-size:12.5px;width:100%}
+th,td{border:1px solid #E5E7EB;padding:5px 8px;text-align:left;white-space:nowrap}
+th{background:#F6F7FA;color:#4B5563;font-weight:600;text-align:center}
+td.n,th.n{text-align:right}
+tr.tot td{background:#DCE3F5;font-weight:700}
+tr.sub td{background:#E9EBF0;font-weight:700}
+.toast{position:fixed;right:18px;bottom:18px;background:#0F1E3D;color:#fff;padding:10px 14px;border-radius:10px;font-size:13px;z-index:90;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+.toast.ok{background:#1D7A4C}
+.toast.err{background:#B23A3A}
+.modal-bg{position:fixed;inset:0;background:rgba(15,30,61,.45);display:flex;align-items:center;justify-content:center;z-index:80;padding:20px}
+.modal{background:#fff;border-radius:14px;max-width:560px;width:100%;max-height:88vh;display:flex;flex-direction:column}
+.modal.wide{max-width:920px}
+.modal h3{margin:0;padding:14px 16px;border-bottom:1px solid #E5E7EB;font-size:15px;display:flex;align-items:center;gap:8px}
+.modal .x{border:0;background:none;font-size:16px;cursor:pointer;color:#6B7280}
+.modal .mb{padding:14px 16px;overflow:auto}
+.modal .mf{padding:12px 16px;border-top:1px solid #E5E7EB;display:flex;gap:8px;justify-content:flex-end}
+/* 출고 일정 · 정리 일정 표 — F안(엑셀 고밀도) · 2026-11-24 행님이 고름 */
+table.sched.f{border-collapse:separate;border-spacing:0;width:max-content;font-size:11px}
+table.sched.f th,table.sched.f td{border-right:1px solid #C8CDD6;border-bottom:1px solid #C8CDD6;border-left:0;border-top:0;padding:1px 5px}
+table.sched.f td.dy,table.sched.f th.dy{min-width:46px;text-align:right}
+table.sched.f th.dy,table.sched.f td.dy.c{text-align:center}
+table.sched.f .st{position:sticky;z-index:3;background:#fff;overflow:hidden;text-overflow:ellipsis}
+table.sched.f thead .st{background:#E8EBF0;z-index:4;font-weight:700;color:#1F2430}
+table.sched.f .st.last{border-right:2px solid #6B7280}
+table.sched.f thead th.dy{background:#E8EBF0;color:#1F2430;font-weight:700;border-bottom:1px solid #9CA3AF}
+table.sched.f thead th.dy .w{font-weight:400;color:#6B7280}
+table.sched.f thead th.dy.wk{background:#DFE2E8;color:#B9452F}
+table.sched.f thead th.dy.wk .w{color:#B9452F}
+table.sched.f thead th.dy.tod{background:#C9A227;color:#20242C}
+table.sched.f thead th.dy.tod .w{color:#20242C}
+table.sched.f th.mon{background:#2B3A67;color:#fff;letter-spacing:1px;text-align:center;font-size:11.5px}
+table.sched.f tr.mo .st{background:#2B3A67;color:#fff}
+table.sched.f tr.bd .st.lane{background:#F4F6F9;color:#1F2430}
+table.sched.f tr.bd td.dy{background:#FAFBFC;padding:2px 3px}
+table.sched.f .bandc{color:#fff;border-radius:3px;padding:1px 8px;font-weight:700;font-size:10.5px;text-align:center;overflow:hidden;cursor:pointer}
+table.sched.f .bandc i{font-style:normal;margin-left:4px;opacity:.8;cursor:pointer}
+table.sched.f .bandc i:hover{opacity:1}
+table.sched.f td.dy.wk{background:#F0F1F4}
+table.sched.f td.dy.tod{box-shadow:inset 2px 0 0 #C0392B,inset -2px 0 0 #C0392B}
+table.sched.f td.gc{background:var(--c);color:#fff;font-weight:800;text-align:center;writing-mode:vertical-rl;text-orientation:upright;letter-spacing:3px}
+table.sched.f tbody tr.tot .st{background:#CBD5EC}
+table.sched.f tbody tr.sub .st{background:#E3E7F1}
+table.sched.f tbody tr.sub.s3 .st{background:#D7DCEA;border-top:1px solid #9CA3AF}
+table.sched.f tbody tr.sub.s3 td.dy{border-top:1px solid #9CA3AF}
+table.sched.f tbody tr.tot td.gc,table.sched.f tbody tr.pg td.gc{background:var(--c)}
+table.sched.f tbody td.dy.bar{background:var(--c,#44506B);color:#fff;font-weight:700;border-right-color:rgba(255,255,255,.3);cursor:grab}
+table.sched.f tbody tr{--c:#44506B}
+table.sched.f tbody tr.tot,table.sched.f tbody tr.pg{--c:#44506B}
+table.sched.f tfoot .st{background:#B9C6E6;font-weight:700;border-top:2px solid #6B7280}
+table.sched.f tfoot td.dy{background:#EEF1F8;font-weight:700;border-top:2px solid #6B7280}
+table.sched.f tfoot tr.pm td.dy{background:#FFFDF0}
+table.sched.f tfoot td.gc{background:var(--c)}
+.gtt.pan{cursor:grabbing;user-select:none}
+.dt{border:1px solid #9CA3AF;border-radius:4px;padding:0 2px;font-size:10.5px;width:100px;background:#FFFDF0;font-family:inherit}
+.dt.man{border-color:#C9A227;background:#FFF3CD;font-weight:700}
+.mn{border:1px solid #C7D0E0;border-radius:4px;padding:0 2px;font-size:10.5px;width:40px;text-align:right;background:#FFFDF0;font-family:inherit}
+table.sched.f tr.pm td.dy{background:#FFFDF0}
+table.sched.f tr.pp td.dy{background:#F4F6F9;font-weight:700}
+.addb{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.in.sm{padding:2px 6px;font-size:12px;height:26px}
+@media (max-width:860px){.wrap{flex-direction:column}.side{width:auto;flex:none}.nav{flex-direction:row;flex-wrap:wrap}.keep{margin-top:8px}}
+/* 고르는 칸 (묶음 차례 · 보일 칸 · 소계만) */
+.cflt{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start}
+.cflt .fg{display:flex;gap:8px;align-items:flex-start}
+.cflt .t{font-size:12px;color:#6B7280;padding-top:5px;white-space:nowrap}
+.cflt .chips{display:flex;gap:5px;flex-wrap:wrap}
+.chip2{border:1px solid #C7D0E0;border-radius:999px;padding:3px 11px;font-size:12px;cursor:pointer;background:#fff;user-select:none}
+.chip2:hover{background:#F2F5FA}
+.chip2.on{background:#0F1E3D;color:#fff;border-color:#0F1E3D}
+.chip2.x{border-style:dashed;color:#6B7280}

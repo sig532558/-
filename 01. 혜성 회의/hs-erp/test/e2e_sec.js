@@ -1,0 +1,20 @@
+const { chromium } = require('playwright');
+const URL = 'http://localhost:' + (process.env.PORT || 8767) + '/';
+const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process.exitCode = 1; };
+(async () => {
+  const b = await chromium.launch(); const pg = await b.newPage({ viewport: { width: 1360, height: 900 } }); const errs = [];
+  pg.on('pageerror', (e) => errs.push('pageerror: ' + e.message)); pg.on('console', (m) => { if (m.type() === 'error' && !/형식이 올바르지/.test(m.text())) errs.push('console: ' + m.text()); });
+  await pg.goto(URL); await pg.waitForSelector('#lid'); await pg.fill('#lid', 'admin'); await pg.fill('#lpw', 'admin1234'); await pg.click('#lgo'); await pg.waitForSelector('#body');
+  await pg.goto(URL + '#/settings?k=sec'); await pg.waitForTimeout(1500);
+  const t = await pg.textContent('#body');
+  ok(/보안 점검/.test(t) && /⑤ 관리자 기능 허용 주소/.test(t) && /③ 2단계 인증/.test(t) && /① 접속 문 설정 안내/.test(t), '보안 탭 4개 카드 표시');
+  ok(/④ 보안 헤더[^]*적용됨/.test(t), '④ 보안 헤더 적용됨 감지');
+  await pg.fill('#ips', 'abc'); await pg.click('#saveips'); await pg.waitForTimeout(400);
+  ok(/형식이 올바르지/.test(await pg.textContent('body')), '잘못된 주소 형식 차단');
+  await pg.screenshot({ path: __dirname + '/shots/sec_tab.png', fullPage: true });
+  await pg.setViewportSize({ width: 390, height: 844 }); await pg.waitForTimeout(300);
+  ok(await pg.evaluate(() => document.documentElement.scrollWidth <= 400), '휴대폰 화면 가로 넘침 없음');
+  await pg.screenshot({ path: __dirname + '/shots/sec_tab_m.png', fullPage: true });
+  console.log(errs.length ? 'ERRORS:\n' + errs.join('\n') : 'no page errors'); if (errs.length) process.exitCode = 1;
+  await b.close();
+})();
