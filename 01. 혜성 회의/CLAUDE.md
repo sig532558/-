@@ -16,12 +16,14 @@
 - **업데이트 zip(`ERP_수정파일_*.zip`)은 항상 `클로드 코드\01. 혜성 회의` 폴더에 만든다.** 바탕화면에 두지 않는다 (2026-11-24 지시). 이전 zip 들이 모두 이 폴더에 모여 있다.
   `python tools/mkzip.py "C:\Users\sig53\Desktop\클로드 코드\01. 혜성 회의" ERP_수정파일_MMDD.zip <안내문.txt>`
 
-## 에이전시 운영 (Claude + Gemini)
+## 에이전시 운영 (Claude + Gemini + Groq)
 
-- 중심은 Claude, 하위 업무(초안 제작·검증)는 Gemini(무료 버전)가 맡는다.
-- Gemini 호출이 실패하면 멈추지 말고 Claude가 직접 처리한다.
+- 중심은 Claude, 하위 업무(초안 제작·검증)는 Gemini(무료 버전)와 Groq(무료 API)가 나눠 맡는다.
+- Groq는 응답 속도가 빨라 간단한 초안·요약에 우선 쓰고, 멀티모달·깊은 검증은 Gemini를 쓴다.
+- Gemini·Groq 호출이 실패하면 멈추지 말고 Claude가 직접 처리한다.
 - 자동 작업은 '주간 업무 브리핑'만 켜 둔다. 브리핑은 이 사이트의 회의자료를 기반으로 정리한다.
-- 서브에이전트 정의: `.claude/agents/gemini-helper.md` (이 프로젝트 전용, 저장소 공통 정의는 루트 `.claude/agents/gemini-helper.md`).
+- 서브에이전트 정의: `.claude/agents/gemini-helper.md`, `.claude/agents/groq-helper.md` (이 프로젝트 전용, 저장소 공통 정의는 루트 동일 파일명).
+- Groq API 키는 `.env` 파일(`GROQ_API_KEY`)에 저장하며 저장소에는 커밋하지 않는다.
 
 ## 메뉴 현황 (2026-11 결정)
 

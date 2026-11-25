@@ -1,0 +1,5 @@
+# 비밀 키·자격 증명 — 저장소에 올리지 않음
+.env
+.env.*
+*.secret
+node_modules/
